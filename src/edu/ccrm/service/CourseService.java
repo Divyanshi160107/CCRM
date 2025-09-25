@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 public class CourseService {
 
-    // A list to act as an in-memory database for courses.
     private final List<Course> courses = new ArrayList<>();
 
     /**
@@ -16,14 +15,13 @@ public class CourseService {
      * @return The newly created Course object.
      */
     public Course addCourse(String code, String title, int credits, String instructor, Semester semester, String department) {
-        // Use the Builder to construct the Course object.
         Course newCourse = new Course.Builder(code, title)
             .credits(credits)
             .instructor(instructor)
             .semester(semester)
             .department(department)
-            .build(); // The final build() step creates the object.
-
+            .build();
+        
         courses.add(newCourse);
         System.out.println("Course added successfully: " + title);
         return newCourse;
@@ -42,9 +40,9 @@ public class CourseService {
         }
         return null;
     }
-
+    
     /**
-     * Searches for courses using the Stream API, as required by the project[cite: 23].
+     * Searches for courses using the Stream API.
      * @param query The search text to look for in the course title.
      * @return A list of courses that match the query.
      */
@@ -60,5 +58,19 @@ public class CourseService {
      */
     public List<Course> getAllCourses() {
         return new ArrayList<>(courses);
+    }
+
+    /**
+     * Deactivates a course by changing its status.
+     * @param courseCode The code of the course to deactivate.
+     * @return true if the course was found and deactivated, false otherwise.
+     */
+    public boolean deactivateCourse(String courseCode) {
+        Course courseToDeactivate = findCourseByCode(courseCode);
+        if (courseToDeactivate != null) {
+            courseToDeactivate.setStatus("Inactive");
+            return true;
+        }
+        return false;
     }
 }
